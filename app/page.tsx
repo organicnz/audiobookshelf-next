@@ -1,22 +1,35 @@
-'use client';
+import React from 'react';
+import { createClient } from '@/utils/supabase/server';
+import { Library } from '@/components/Library';
+import { BookDetail } from '@/components/BookDetail';
+import { Book, mapDbBookToBook } from '@/types';
+import { MOCK_BOOKS } from '@/constants';
+import ClientPageWrapper from '@/components/ClientPageWrapper';
 
-import React, { useState } from 'react';
-import { Library } from '../components/Library';
-import { BookDetail } from '../components/BookDetail';
-import { Book } from '../types';
+// Server Component
+export default async function Home() {
+  const supabase = await createClient();
+  let books: Book[] = [];
 
-export default function Home() {
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  try {
+    const { data, error } = await supabase
+      .from('books')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      books = data.map(mapDbBookToBook);
+    } else {
+        // Fallback to mock data if no DB connection or empty
+        console.warn("Supabase fetch failed or empty, using mock data:", error);
+        books = MOCK_BOOKS;
+    }
+  } catch (e) {
+      console.warn("Supabase connection error, using mock data.", e);
+      books = MOCK_BOOKS;
+  }
 
   return (
-    <>
-      <Library onBookSelect={setSelectedBook} />
-      {selectedBook && (
-        <BookDetail 
-          book={selectedBook} 
-          onClose={() => setSelectedBook(null)} 
-        />
-      )}
-    </>
+    <ClientPageWrapper books={books} view="library" />
   );
 }

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Book } from '../types';
 import { X, Play, BookOpen, Bot, Mic, FileText, ChevronRight } from 'lucide-react';
-import { Button } from './ui/Button';
+import { Button } from './ui/button';
 import { usePlayer } from '../context/PlayerContext';
 import { generateSummary, chatWithBook, generateTTSPreview } from '../app/actions';
 import { decodeAudioData } from '../services/audioUtils';

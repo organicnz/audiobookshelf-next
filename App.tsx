@@ -4,6 +4,8 @@ import { Layout } from './components/Layout';
 import { Library } from './components/Library';
 import { BookDetail } from './components/BookDetail';
 import { Analytics } from './components/Analytics';
+import { SeriesView } from './components/SeriesView';
+import { MOCK_BOOKS } from './constants';
 import { Book } from './types';
 
 function App() {
@@ -14,22 +16,17 @@ function App() {
     <PlayerProvider>
       <Layout activeView={activeView} onNavigate={setActiveView}>
         {activeView === 'library' && (
-          <Library onBookSelect={setSelectedBook} />
+          <Library initialBooks={MOCK_BOOKS} onBookSelect={setSelectedBook} />
         )}
         
         {activeView === 'analytics' && (
           <Analytics />
         )}
 
-        {/* Placeholder for Series View */}
         {activeView === 'series' && (
-          <div className="flex flex-col items-center justify-center h-[50vh] text-slate-500">
-             <h3 className="text-xl font-medium">Series View</h3>
-             <p>Organize your books by series. Coming soon.</p>
-          </div>
+          <SeriesView initialBooks={MOCK_BOOKS} onBookSelect={setSelectedBook} />
         )}
 
-        {/* Modal for Selected Book */}
         {selectedBook && (
           <BookDetail 
             book={selectedBook} 

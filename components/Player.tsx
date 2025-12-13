@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { Play, Pause, SkipBack, SkipForward, Volume2, X, AlertCircle } from 'lucide-react';
-import { Button } from './ui/Button';
+import { Button } from './ui/button';
 
 export const Player: React.FC = () => {
   const { 
@@ -52,7 +52,6 @@ export const Player: React.FC = () => {
             </Button>
             
             <Button 
-              variant="primary" 
               className="rounded-full w-12 h-12 !p-0 flex items-center justify-center shadow-lg shadow-blue-500/20"
               onClick={togglePlayPause}
             >

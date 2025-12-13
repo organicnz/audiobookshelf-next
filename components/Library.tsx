@@ -1,18 +1,28 @@
+'use client';
+
 import React from 'react';
-import { MOCK_BOOKS } from '../constants';
 import { BookCard } from './BookCard';
 import { Book } from '../types';
 
 interface LibraryProps {
+  initialBooks: Book[];
   onBookSelect: (book: Book) => void;
 }
 
-export const Library: React.FC<LibraryProps> = ({ onBookSelect }) => {
+export const Library: React.FC<LibraryProps> = ({ initialBooks, onBookSelect }) => {
   // Sort books: Recently added first
-  const sortedBooks = [...MOCK_BOOKS].sort((a, b) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime());
+  const sortedBooks = [...initialBooks].sort((a, b) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime());
 
   // Group by "Continue Listening" vs "All"
   const inProgress = sortedBooks.filter(b => b.progress > 0 && b.progress < b.duration);
+
+  if (initialBooks.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[50vh] text-slate-500">
+        <p>No books found in library.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
