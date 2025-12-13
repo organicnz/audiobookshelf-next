@@ -2,6 +2,8 @@
 
 import { GoogleGenAI, Modality } from "@google/genai";
 import { GeminiModel } from '../types';
+import { getCached, setCached } from '../lib/upstash';
+import { logAnalyticsEvent } from '../lib/motherduck';
 
 // Initialize Gemini on the server side
 const getAI = () => {
@@ -9,13 +11,31 @@ const getAI = () => {
 };
 
 export async function generateSummary(title: string, author: string): Promise<string> {
+  const cacheKey = `summary:${title}:${author}`;
+  
+  // 1. Check Upstash Cache
+  const cached = await getCached<string>(cacheKey);
+  if (cached) {
+    await logAnalyticsEvent('summary_view', { title, author, source: 'cache' });
+    return cached;
+  }
+
   try {
     const ai = getAI();
     const response = await ai.models.generateContent({
       model: GeminiModel.FLASH,
       contents: `Provide a concise 3-sentence summary of the book "${title}" by ${author}. Focus on the main conflict and themes.`,
     });
-    return response.text || "No summary available.";
+    
+    const text = response.text || "No summary available.";
+    
+    // 2. Save to Upstash Cache (24 hour TTL)
+    await setCached(cacheKey, text, 86400);
+    
+    // 3. Log to MotherDuck
+    await logAnalyticsEvent('summary_generated', { title, author, source: 'gemini' });
+
+    return text;
   } catch (error) {
     console.error("Gemini Summary Error:", error);
     return "Failed to generate summary.";
@@ -24,6 +44,8 @@ export async function generateSummary(title: string, author: string): Promise<st
 
 export async function chatWithBook(title: string, author: string, question: string): Promise<string> {
   try {
+    await logAnalyticsEvent('chat_query', { title, author, question });
+
     const ai = getAI();
     const response = await ai.models.generateContent({
       model: GeminiModel.PRO,
@@ -55,6 +77,11 @@ export async function generateTTSPreview(text: string): Promise<string | null> {
     });
 
     const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+    
+    if (base64Audio) {
+        await logAnalyticsEvent('tts_generated', { length: text.length });
+    }
+    
     return base64Audio || null;
   } catch (error) {
     console.error("Gemini TTS Error:", error);

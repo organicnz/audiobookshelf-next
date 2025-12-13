@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -25,14 +26,15 @@ export const Library: React.FC<LibraryProps> = ({ initialBooks, onBookSelect }) 
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12 pb-24">
       {inProgress.length > 0 && (
-        <section>
-           <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-             <span className="w-1.5 h-6 bg-accent rounded-full"></span>
-             Continue Listening
-           </h2>
-           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <section className="space-y-6">
+           <div className="flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-white tracking-tight">Continue Listening</h2>
+              <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+           </div>
+           
+           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-10">
              {inProgress.map(book => (
                <BookCard key={book.id} book={book} onClick={() => onBookSelect(book)} />
              ))}
@@ -40,12 +42,13 @@ export const Library: React.FC<LibraryProps> = ({ initialBooks, onBookSelect }) 
         </section>
       )}
 
-      <section>
-        <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-           <span className="w-1.5 h-6 bg-primary rounded-full"></span>
-           Library
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <section className="space-y-6">
+        <div className="flex items-center gap-3">
+           <h2 className="text-2xl font-bold text-white tracking-tight">All Books</h2>
+           <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+        </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-10">
           {sortedBooks.map(book => (
             <BookCard key={book.id} book={book} onClick={() => onBookSelect(book)} />
           ))}

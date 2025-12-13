@@ -1,9 +1,10 @@
+
 'use client';
 
 import React, { useState } from 'react';
 import { Book } from '../types';
 import { X, Play, BookOpen, Bot, Mic, FileText, ChevronRight } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from './ui/Button';
 import { usePlayer } from '../context/PlayerContext';
 import { generateSummary, chatWithBook, generateTTSPreview } from '../app/actions';
 import { decodeAudioData } from '../services/audioUtils';
@@ -67,8 +68,8 @@ export const BookDetail: React.FC<BookDetailProps> = ({ book, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-background w-full max-w-4xl h-[90vh] rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row border border-slate-700">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="bg-background/90 w-full max-w-4xl h-[90vh] rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row border border-white/10 backdrop-blur-xl">
         
         {/* Mobile Close Button */}
         <button onClick={onClose} className="absolute top-4 right-4 md:hidden z-10 bg-black/50 p-2 rounded-full text-white">
@@ -76,19 +77,19 @@ export const BookDetail: React.FC<BookDetailProps> = ({ book, onClose }) => {
         </button>
 
         {/* Left Panel: Cover & Key Actions */}
-        <div className="w-full md:w-1/3 bg-surface p-6 flex flex-col items-center border-b md:border-b-0 md:border-r border-slate-700 overflow-y-auto">
-          <img src={book.cover} alt={book.title} className="w-48 rounded-lg shadow-2xl mb-6 object-cover aspect-[2/3]" />
+        <div className="w-full md:w-1/3 bg-black/20 p-6 flex flex-col items-center border-b md:border-b-0 md:border-r border-white/5 overflow-y-auto">
+          <img src={book.cover} alt={book.title} className="w-48 rounded-lg shadow-2xl mb-6 object-cover aspect-[2/3] ring-1 ring-white/10" />
           
           <h2 className="text-xl font-bold text-center text-white mb-1">{book.title}</h2>
           <p className="text-slate-400 mb-6 text-center">{book.author}</p>
 
           <div className="flex flex-col gap-3 w-full">
-            <Button onClick={() => playBook(book)} className="w-full gap-2 justify-center">
+            <Button onClick={() => playBook(book)} className="w-full gap-2 justify-center bg-indigo-600 hover:bg-indigo-700 text-white">
               <Play className="w-4 h-4 fill-current" /> Play Audiobook
             </Button>
             <Button 
                 variant="secondary" 
-                className="w-full gap-2 justify-center"
+                className="w-full gap-2 justify-center bg-white/5 border-white/10 hover:bg-white/10"
                 onClick={handleTTSPreview}
                 disabled={ttsLoading}
             >
@@ -96,28 +97,28 @@ export const BookDetail: React.FC<BookDetailProps> = ({ book, onClose }) => {
               {ttsLoading ? 'Generating Audio...' : 'AI Narrator Preview'}
             </Button>
             {book.series && (
-               <div className="mt-4 p-3 bg-slate-800 rounded-lg border border-slate-700 w-full text-sm text-center">
+               <div className="mt-4 p-3 bg-white/5 rounded-lg border border-white/5 w-full text-sm text-center">
                  <span className="text-slate-400">Part of series</span>
-                 <div className="text-accent font-medium">{book.series}</div>
+                 <div className="text-indigo-300 font-medium">{book.series}</div>
                </div>
             )}
           </div>
         </div>
 
         {/* Right Panel: Content */}
-        <div className="flex-1 flex flex-col h-full bg-background/50">
+        <div className="flex-1 flex flex-col h-full bg-transparent">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-slate-700 bg-surface/50">
-             <div className="flex space-x-1 bg-slate-900 p-1 rounded-lg">
+          <div className="flex items-center justify-between p-4 border-b border-white/5 bg-white/5">
+             <div className="flex space-x-1 bg-black/40 p-1 rounded-lg border border-white/5">
                 <button 
                   onClick={() => setActiveTab('info')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === 'info' ? 'bg-slate-700 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === 'info' ? 'bg-white/10 text-white shadow ring-1 ring-white/5' : 'text-slate-400 hover:text-white'}`}
                 >
                   <BookOpen className="w-4 h-4" /> Info
                 </button>
                 <button 
                    onClick={() => setActiveTab('ai')}
-                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === 'ai' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === 'ai' ? 'bg-indigo-500/80 text-white shadow ring-1 ring-indigo-500/50' : 'text-slate-400 hover:text-white'}`}
                 >
                    <Bot className="w-4 h-4" /> Ask AI
                 </button>
@@ -133,7 +134,7 @@ export const BookDetail: React.FC<BookDetailProps> = ({ book, onClose }) => {
               <div className="space-y-6">
                 <section>
                   <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-primary" /> Description
+                    <FileText className="w-5 h-5 text-indigo-400" /> Description
                   </h3>
                   <p className="text-slate-300 leading-relaxed text-sm md:text-base">
                     {book.description}
@@ -143,7 +144,7 @@ export const BookDetail: React.FC<BookDetailProps> = ({ book, onClose }) => {
                 <section>
                   <div className="flex items-center justify-between mb-3">
                      <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                       <Bot className="w-5 h-5 text-accent" /> AI Summary
+                       <Bot className="w-5 h-5 text-indigo-400" /> AI Summary
                      </h3>
                      {!summary && (
                        <Button size="sm" variant="ghost" onClick={handleSummary} disabled={loadingSummary}>
@@ -152,11 +153,11 @@ export const BookDetail: React.FC<BookDetailProps> = ({ book, onClose }) => {
                      )}
                   </div>
                   {summary ? (
-                    <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-700 text-slate-300 text-sm italic">
+                    <div className="p-4 bg-white/5 rounded-lg border border-white/5 text-slate-300 text-sm italic">
                       {summary}
                     </div>
                   ) : (
-                    <div className="p-8 border-2 border-dashed border-slate-800 rounded-lg flex flex-col items-center justify-center text-slate-500 gap-2">
+                    <div className="p-8 border-2 border-dashed border-white/10 rounded-lg flex flex-col items-center justify-center text-slate-500 gap-2">
                       <Bot className="w-8 h-8 opacity-50" />
                       <p className="text-sm">Ask Gemini to summarize this book instantly.</p>
                     </div>
@@ -165,7 +166,7 @@ export const BookDetail: React.FC<BookDetailProps> = ({ book, onClose }) => {
 
                 <div className="flex flex-wrap gap-2">
                   {book.genres.map(g => (
-                    <span key={g} className="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs font-medium border border-slate-700">
+                    <span key={g} className="px-3 py-1 bg-white/5 text-slate-300 rounded-full text-xs font-medium border border-white/5">
                       {g}
                     </span>
                   ))}
@@ -184,14 +185,14 @@ export const BookDetail: React.FC<BookDetailProps> = ({ book, onClose }) => {
                   )}
                   {chatHistory.map((msg, i) => (
                     <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-[80%] p-3 rounded-lg text-sm ${msg.role === 'user' ? 'bg-primary text-white rounded-br-none' : 'bg-slate-800 text-slate-200 border border-slate-700 rounded-bl-none'}`}>
+                      <div className={`max-w-[80%] p-3 rounded-lg text-sm ${msg.role === 'user' ? 'bg-indigo-600 text-white rounded-br-none' : 'bg-white/10 text-slate-200 border border-white/5 rounded-bl-none'}`}>
                         {msg.text}
                       </div>
                     </div>
                   ))}
                   {chatLoading && (
                     <div className="flex justify-start">
-                      <div className="bg-slate-800 p-3 rounded-lg rounded-bl-none flex gap-1">
+                      <div className="bg-white/5 p-3 rounded-lg rounded-bl-none flex gap-1">
                         <span className="w-2 h-2 bg-slate-500 rounded-full animate-bounce"></span>
                         <span className="w-2 h-2 bg-slate-500 rounded-full animate-bounce delay-75"></span>
                         <span className="w-2 h-2 bg-slate-500 rounded-full animate-bounce delay-150"></span>
@@ -206,9 +207,9 @@ export const BookDetail: React.FC<BookDetailProps> = ({ book, onClose }) => {
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
                     placeholder="Ask Gemini about this book..."
-                    className="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-primary focus:outline-none"
+                    className="flex-1 bg-black/40 border border-white/10 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder:text-slate-600"
                   />
-                  <Button type="submit" disabled={chatLoading || !chatInput.trim()} size="icon">
+                  <Button type="submit" disabled={chatLoading || !chatInput.trim()} size="icon" className="bg-indigo-600 hover:bg-indigo-700">
                     <ChevronRight className="w-5 h-5" />
                   </Button>
                 </form>

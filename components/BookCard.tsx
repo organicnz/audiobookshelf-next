@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { Book } from '../types';
-import { Play, Info } from 'lucide-react';
+import { Play, Info, Clock, CheckCircle2 } from 'lucide-react';
 import { usePlayer } from '../context/PlayerContext';
+import { Badge } from './ui/badge';
 
 interface BookCardProps {
   book: Book;
@@ -11,61 +13,75 @@ interface BookCardProps {
 export const BookCard: React.FC<BookCardProps> = ({ book, onClick }) => {
   const { playBook, currentBook, isPlaying } = usePlayer();
   const isCurrent = currentBook?.id === book.id;
+  const pct = Math.round((book.progress / book.duration) * 100);
+  const isFinished = pct >= 100;
 
   const handlePlayClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     playBook(book);
   };
 
-  const pct = Math.round((book.progress / book.duration) * 100);
-
   return (
     <div 
-      className="group relative bg-surface rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer border border-white/5"
+      className="group flex flex-col gap-3 cursor-pointer gpu-accelerated"
       onClick={onClick}
     >
-      <div className="aspect-[2/3] w-full overflow-hidden relative">
+      <div className="relative aspect-[2/3] w-full rounded-xl overflow-hidden shadow-2xl transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-indigo-500/20 ring-1 ring-white/10">
         <img 
           src={book.cover} 
           alt={book.title} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 will-change-transform"
         />
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[2px]">
+        
+        {/* Glass Overlay on Hover */}
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-4 backdrop-blur-[2px] will-change-opacity">
            <button 
              onClick={handlePlayClick}
-             className="bg-primary hover:bg-blue-600 text-white rounded-full p-3 shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300"
+             className="bg-white text-black rounded-full p-4 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-110 transition-transform duration-200"
            >
              <Play className="w-6 h-6 fill-current pl-1" />
            </button>
            <button 
              onClick={onClick}
-             className="bg-white/20 hover:bg-white/30 text-white rounded-full p-3 shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75 backdrop-blur-md"
+             className="text-white font-medium text-xs bg-white/10 hover:bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 transition-colors"
            >
-             <Info className="w-6 h-6" />
+             View Details
            </button>
         </div>
-        
-        {/* Progress Bar Overlay */}
-        {pct > 0 && (
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/50">
-            <div className="h-full bg-accent" style={{ width: `${pct}%` }} />
+
+        {/* Progress Overlay */}
+        {pct > 0 && !isFinished && (
+          <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-black/50 backdrop-blur-sm">
+            <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]" style={{ width: `${pct}%` }} />
           </div>
+        )}
+
+        {/* Finished Overlay */}
+        {isFinished && (
+           <div className="absolute top-2 right-2">
+              <div className="bg-green-500/90 text-white rounded-full p-1 shadow-lg backdrop-blur-sm">
+                 <CheckCircle2 className="w-4 h-4" />
+              </div>
+           </div>
         )}
       </div>
 
-      <div className="p-3">
-        <h3 className="font-semibold text-slate-100 truncate" title={book.title}>{book.title}</h3>
-        <p className="text-sm text-slate-400 truncate">{book.author}</p>
-        <div className="mt-2 flex items-center justify-between">
-           <span className="text-xs text-slate-500 px-2 py-0.5 bg-slate-800 rounded-full border border-slate-700">
-             {book.genres[0]}
-           </span>
-           {isCurrent && isPlaying && (
-             <span className="flex h-2 w-2">
-               <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-accent opacity-75"></span>
-               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-             </span>
-           )}
+      <div className="space-y-1">
+        <h3 className="font-bold text-base text-slate-100 leading-tight line-clamp-1 group-hover:text-indigo-400 transition-colors" title={book.title}>
+            {book.title}
+        </h3>
+        <p className="text-sm text-slate-400 line-clamp-1">{book.author}</p>
+        
+        <div className="flex items-center justify-between pt-1">
+            <Badge variant="outline" className="text-[10px] px-1.5 h-5 border-white/10 bg-white/5 text-slate-400">
+                {book.genres[0]}
+            </Badge>
+            {book.duration > 0 && (
+                <span className="text-[10px] text-slate-500 flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    {Math.round(book.duration / 3600)}h
+                </span>
+            )}
         </div>
       </div>
     </div>
