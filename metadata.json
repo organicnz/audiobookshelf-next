@@ -1,0 +1,7 @@
+{
+  "name": "Audiobookshelf Next",
+  "description": "A modern, serverless rewrite of Audiobookshelf using Next.js 16, React 19, Supabase, and Gemini AI.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
