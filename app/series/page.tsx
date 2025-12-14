@@ -1,8 +1,8 @@
 import React from 'react';
-import { createClient } from '@/utils/supabase/server';
-import { Book, mapDbBookToBook } from '@/types';
-import { MOCK_BOOKS } from '@/constants';
-import ClientPageWrapper from '@/components/ClientPageWrapper';
+import { createClient } from '../../utils/supabase/server';
+import { Book, mapDbBookToBook } from '../../types';
+import { MOCK_BOOKS } from '../../constants';
+import ClientPageWrapper from '../../components/ClientPageWrapper';
 
 export default async function SeriesPage() {
   const supabase = await createClient();

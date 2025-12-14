@@ -1,10 +1,10 @@
 'use client'
 
 import * as React from 'react'
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '../../utils/supabase/client'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/input'
+import { Button } from '../../components/ui/button'
+import { Input } from '../../components/ui/input'
 import { Play, Loader2 } from 'lucide-react'
 
 export default function LoginPage() {

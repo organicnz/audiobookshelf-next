@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { Play, Pause, SkipBack, SkipForward, Volume2, X, ListMusic, Maximize2 } from 'lucide-react';
-import { Button } from './ui/Button';
+import { Button } from './ui/button';
 
 export const Player: React.FC = () => {
   const { 

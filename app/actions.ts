@@ -4,7 +4,7 @@ import { GoogleGenAI, Modality } from "@google/genai";
 import { GeminiModel } from '../types';
 import { getCached, setCached } from '../lib/upstash';
 import { logAnalyticsEvent } from '../lib/motherduck';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '../utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 // Initialize Gemini on the server side

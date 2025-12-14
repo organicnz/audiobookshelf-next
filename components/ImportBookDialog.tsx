@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
-import { Button } from './ui/Button';
+import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Upload, FolderInput, FilePlus2, Loader2, ImagePlus } from 'lucide-react';
 import { createBook } from '../app/actions';

@@ -1,9 +1,9 @@
 import React from 'react';
-import { createClient } from '@/utils/supabase/server';
-import { Library } from '@/components/Library';
-import { Book, mapDbBookToBook } from '@/types';
-import { MOCK_BOOKS } from '@/constants';
-import ClientPageWrapper from '@/components/ClientPageWrapper';
+import { createClient } from '../utils/supabase/server';
+import { Library } from '../components/Library';
+import { Book, mapDbBookToBook } from '../types';
+import { MOCK_BOOKS } from '../constants';
+import ClientPageWrapper from '../components/ClientPageWrapper';
 import { redirect } from 'next/navigation';
 
 export default async function Home() {
