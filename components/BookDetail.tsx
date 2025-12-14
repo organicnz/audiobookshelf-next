@@ -1,7 +1,6 @@
-
 'use client';
 
-import React, { useState } from 'react';
+import * as React from 'react';
 import { Book } from '../types';
 import { X, Play, BookOpen, Bot, Mic, FileText, ChevronRight } from 'lucide-react';
 import { Button } from './ui/Button';
@@ -16,15 +15,15 @@ interface BookDetailProps {
 
 export const BookDetail: React.FC<BookDetailProps> = ({ book, onClose }) => {
   const { playBook, previewAudioBuffer } = usePlayer();
-  const [activeTab, setActiveTab] = useState<'info' | 'ai'>('info');
+  const [activeTab, setActiveTab] = React.useState<'info' | 'ai'>('info');
   
   // AI State
-  const [summary, setSummary] = useState<string | null>(null);
-  const [loadingSummary, setLoadingSummary] = useState(false);
-  const [chatInput, setChatInput] = useState('');
-  const [chatHistory, setChatHistory] = useState<{role: 'user'|'ai', text: string}[]>([]);
-  const [chatLoading, setChatLoading] = useState(false);
-  const [ttsLoading, setTtsLoading] = useState(false);
+  const [summary, setSummary] = React.useState<string | null>(null);
+  const [loadingSummary, setLoadingSummary] = React.useState(false);
+  const [chatInput, setChatInput] = React.useState('');
+  const [chatHistory, setChatHistory] = React.useState<{role: 'user'|'ai', text: string}[]>([]);
+  const [chatLoading, setChatLoading] = React.useState(false);
+  const [ttsLoading, setTtsLoading] = React.useState(false);
 
   const handleSummary = async () => {
     setLoadingSummary(true);

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Player } from './Player';
 import { Library, Settings, Radio, BarChart3, Search, Home, User, Disc, BookMarked } from 'lucide-react';

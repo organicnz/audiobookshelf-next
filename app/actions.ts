@@ -4,6 +4,8 @@ import { GoogleGenAI, Modality } from "@google/genai";
 import { GeminiModel } from '../types';
 import { getCached, setCached } from '../lib/upstash';
 import { logAnalyticsEvent } from '../lib/motherduck';
+import { createClient } from '@/utils/supabase/server';
+import { revalidatePath } from 'next/cache';
 
 // Initialize Gemini on the server side
 const getAI = () => {
@@ -87,4 +89,27 @@ export async function generateTTSPreview(text: string): Promise<string | null> {
     console.error("Gemini TTS Error:", error);
     return null;
   }
+}
+
+export async function createBook(formData: any) {
+  const supabase = await createClient();
+  
+  const { error } = await supabase.from('books').insert({
+    title: formData.title,
+    author: formData.author,
+    description: formData.description,
+    cover_url: formData.cover,
+    series: formData.series,
+    duration: formData.duration || 0,
+    genres: formData.genres || [],
+    created_at: new Date().toISOString()
+  });
+
+  if (error) {
+    console.error("Supabase Import Error:", error);
+    throw new Error(error.message);
+  }
+
+  await logAnalyticsEvent('book_imported', { title: formData.title, author: formData.author });
+  revalidatePath('/');
 }

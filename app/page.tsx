@@ -1,14 +1,20 @@
 import React from 'react';
 import { createClient } from '@/utils/supabase/server';
 import { Library } from '@/components/Library';
-import { BookDetail } from '@/components/BookDetail';
 import { Book, mapDbBookToBook } from '@/types';
 import { MOCK_BOOKS } from '@/constants';
 import ClientPageWrapper from '@/components/ClientPageWrapper';
+import { redirect } from 'next/navigation';
 
-// Server Component
 export default async function Home() {
   const supabase = await createClient();
+  
+  // Auth Check
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login');
+  }
+
   let books: Book[] = [];
 
   try {
@@ -20,7 +26,6 @@ export default async function Home() {
     if (!error && data) {
       books = data.map(mapDbBookToBook);
     } else {
-        // Fallback to mock data if no DB connection or empty
         console.warn("Supabase fetch failed or empty, using mock data:", error);
         books = MOCK_BOOKS;
     }

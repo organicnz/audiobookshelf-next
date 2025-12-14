@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import * as React from 'react';
 import { Library } from './Library';
 import { SeriesView } from './SeriesView';
 import { BookDetail } from './BookDetail';
@@ -12,7 +12,7 @@ interface ClientPageWrapperProps {
 }
 
 export default function ClientPageWrapper({ books, view }: ClientPageWrapperProps) {
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [selectedBook, setSelectedBook] = React.useState<Book | null>(null);
 
   return (
     <>

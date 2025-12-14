@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
+import * as React from 'react';
 import { Book, PlayerState } from '../types';
 
 interface PlayerContextType extends PlayerState {
@@ -13,14 +13,14 @@ interface PlayerContextType extends PlayerState {
   previewAudioBuffer: (buffer: AudioBuffer) => void; // For Gemini TTS preview
 }
 
-const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
+const PlayerContext = React.createContext<PlayerContextType | undefined>(undefined);
 
 export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentBook, setCurrentBook] = useState<Book | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [volume, setVolumeState] = useState(1);
-  const [playbackRate, setPlaybackRateState] = useState(1.0);
+  const [currentBook, setCurrentBook] = React.useState<Book | null>(null);
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const [currentTime, setCurrentTime] = React.useState(0);
+  const [volume, setVolumeState] = React.useState(1);
+  const [playbackRate, setPlaybackRateState] = React.useState(1.0);
 
   // We use a mock audio element logic or a real one. 
   // Since we don't have real audio files for the books, we will simulate playback with a timer
@@ -28,12 +28,12 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // To make the UX convincing, we'll simulate "playback" for books by incrementing a timer, 
   // but actually play audio for the TTS preview.
   
-  const timerRef = useRef<number | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const sourceNodeRef = useRef<AudioBufferSourceNode | null>(null);
+  const timerRef = React.useRef<number | null>(null);
+  const audioContextRef = React.useRef<AudioContext | null>(null);
+  const sourceNodeRef = React.useRef<AudioBufferSourceNode | null>(null);
 
   // Simulation loop for "Fake" Book Playback
-  useEffect(() => {
+  React.useEffect(() => {
     if (isPlaying && currentBook && !sourceNodeRef.current) {
       // Only simulate if NOT playing a real buffer (TTS)
       timerRef.current = window.setInterval(() => {
@@ -57,7 +57,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     };
   }, [isPlaying, currentBook, playbackRate]);
 
-  const playBook = useCallback((book: Book) => {
+  const playBook = React.useCallback((book: Book) => {
     // If playing TTS, stop it
     if (sourceNodeRef.current) {
       sourceNodeRef.current.stop();
@@ -69,7 +69,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setIsPlaying(true);
   }, []);
 
-  const togglePlayPause = useCallback(() => {
+  const togglePlayPause = React.useCallback(() => {
     if (sourceNodeRef.current && audioContextRef.current) {
        if (audioContextRef.current.state === 'running') {
          audioContextRef.current.suspend();
@@ -83,19 +83,19 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setIsPlaying((prev) => !prev);
   }, []);
 
-  const seek = useCallback((time: number) => {
+  const seek = React.useCallback((time: number) => {
     setCurrentTime(time);
   }, []);
 
-  const setVolume = useCallback((vol: number) => {
+  const setVolume = React.useCallback((vol: number) => {
     setVolumeState(vol);
   }, []);
 
-  const setPlaybackRate = useCallback((rate: number) => {
+  const setPlaybackRate = React.useCallback((rate: number) => {
     setPlaybackRateState(rate);
   }, []);
 
-  const closePlayer = useCallback(() => {
+  const closePlayer = React.useCallback(() => {
     setIsPlaying(false);
     setCurrentBook(null);
     if (sourceNodeRef.current) {
@@ -104,7 +104,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, []);
 
-  const previewAudioBuffer = useCallback(async (buffer: AudioBuffer) => {
+  const previewAudioBuffer = React.useCallback(async (buffer: AudioBuffer) => {
     // Stop current simulation or playback
     setIsPlaying(false);
     if (timerRef.current) clearInterval(timerRef.current);
@@ -190,7 +190,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 };
 
 export const usePlayer = () => {
-  const context = useContext(PlayerContext);
+  const context = React.useContext(PlayerContext);
   if (context === undefined) {
     throw new Error('usePlayer must be used within a PlayerProvider');
   }

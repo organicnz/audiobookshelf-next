@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import * as React from 'react';
 import { BookCard } from './BookCard';
 import { Book } from '../types';
 import { Badge } from './ui/badge';

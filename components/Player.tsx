@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+'use client';
+
+import * as React from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { Play, Pause, SkipBack, SkipForward, Volume2, X, ListMusic, Maximize2 } from 'lucide-react';
 import { Button } from './ui/Button';
@@ -11,15 +13,15 @@ export const Player: React.FC = () => {
     togglePlayPause, 
     seek, 
     closePlayer, 
-    playbackRate,
+    playbackRate, 
     setPlaybackRate
   } = usePlayer();
 
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>(0);
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const animationRef = React.useRef<number>(0);
 
   // 120Hz GPU Visualizer Logic
-  useEffect(() => {
+  React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     

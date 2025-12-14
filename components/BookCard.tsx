@@ -1,5 +1,4 @@
-
-import React from 'react';
+import * as React from 'react';
 import { Book } from '../types';
 import { Play, Info, Clock, CheckCircle2 } from 'lucide-react';
 import { usePlayer } from '../context/PlayerContext';

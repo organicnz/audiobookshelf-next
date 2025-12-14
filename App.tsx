@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import { PlayerProvider } from './context/PlayerContext';
 import { Layout } from './components/Layout';
 import { Library } from './components/Library';
@@ -9,8 +9,8 @@ import { MOCK_BOOKS } from './constants';
 import { Book } from './types';
 
 function App() {
-  const [activeView, setActiveView] = useState('library');
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [activeView, setActiveView] = React.useState('library');
+  const [selectedBook, setSelectedBook] = React.useState<Book | null>(null);
 
   return (
     <PlayerProvider>

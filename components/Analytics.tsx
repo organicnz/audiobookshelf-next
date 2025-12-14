@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { BarChart3, Database, Zap, Activity, PieChart } from 'lucide-react';
 
 export const Analytics: React.FC = () => {

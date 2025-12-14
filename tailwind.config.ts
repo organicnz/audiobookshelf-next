@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindAnimate from "tailwindcss-animate";
 
 const config: Config = {
   content: [
@@ -10,17 +11,32 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#0f172a', // Slate 900
-        surface: '#1e293b', // Slate 800
-        primary: '#3b82f6', // Blue 500
-        secondary: '#64748b', // Slate 500
-        accent: '#f59e0b', // Amber 500
+        background: '#121212', // Material Dark
+        surface: '#1e1e1e', // Slightly lighter
+        // Audiobookshelf native primary is roughly Amber/Orange
+        primary: {
+            DEFAULT: '#dca54c', 
+            foreground: '#000000'
+        },
+        secondary: '#2f2f2f', 
+        accent: '#dca54c',
+        muted: {
+            DEFAULT: '#2f2f2f',
+            foreground: '#a1a1aa'
+        },
+        card: {
+            DEFAULT: '#1e1e1e',
+            foreground: '#ededed'
+        },
+        border: '#2f2f2f',
+        input: '#2f2f2f',
+        ring: '#dca54c',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
     },
   },
-  plugins: [],
+  plugins: [tailwindAnimate],
 };
 export default config;
